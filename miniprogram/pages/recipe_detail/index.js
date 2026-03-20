@@ -49,6 +49,32 @@ Page({
     });
   },
 
+  // 删除菜谱
+  deleteRecipe() {
+    wx.showModal({
+      title: '要狠心删掉吗？',
+      content: '删除后无法恢复，确定要删除这道心血之作吗？',
+      confirmColor: '#FF2442',
+      success: (res) => {
+        if (res.confirm) {
+          wx.showLoading({ title: '删除中...' });
+          wx.cloud.database().collection('recipes').doc(this.data.recipeId).remove().then(() => {
+            wx.hideLoading();
+            wx.showToast({ title: '已彻底删除', icon: 'success' });
+            setTimeout(() => {
+              // 返回上一页
+              wx.navigateBack();
+            }, 1000);
+          }).catch(err => {
+            wx.hideLoading();
+            console.error('删除失败', err);
+            wx.showToast({ title: '删除失败', icon: 'none' });
+          });
+        }
+      }
+    });
+  },
+
   // 跳转小红书逻辑（由于微信限制，采用行业标准的剪贴板方案）
   jumpToXhs() {
     if (!this.data.recipe.xhsLink) return;

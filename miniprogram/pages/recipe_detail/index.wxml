@@ -55,9 +55,9 @@
   <view class="bottom-space"></view>
 </view>
 
-<!-- 悬浮操作底座 (管理员可见) -->
 <view class="footer-bar" wx:if="{{isAdmin}}">
+  <button class="btn btn-delete" bindtap="deleteRecipe">🗑️</button>
   <button class="btn btn-outline" bindtap="editRecipe">✏️</button>
-  <button class="btn btn-danger" wx:if="{{isInTonightMenu}}" bindtap="removeFromTonightMenu">❌ 撤回菜单</button>
+  <button class="btn btn-danger" wx:if="{{isInTonightMenu}}" bindtap="removeFromTonightMenu">❌ 移出今日菜单</button>
   <button class="btn btn-primary" wx:else bindtap="addToTonightMenu">🍱 钦定为今晚菜谱</button>
 </view>

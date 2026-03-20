@@ -1,6 +1,6 @@
 <view class="container">
   <view class="header-bar">
-    <text class="page-title">所有菜谱库</text>
+    <text class="page-title">老婆菜谱库</text>
     <button class="add-btn" wx:if="{{isAdmin}}" bindtap="goToAdd">+ 新增菜谱</button>
   </view>
 

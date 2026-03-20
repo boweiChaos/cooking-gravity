@@ -18,8 +18,15 @@ button::after{
 
 
 page {
-  background: #f6f6f6;
+  /* 手账本风格温暖底色和网格 */
+  background-color: #FDF9F1;
+  background-image: 
+    linear-gradient(90deg, rgba(210, 200, 190, 0.25) 2rpx, transparent 2rpx),
+    linear-gradient(rgba(210, 200, 190, 0.25) 2rpx, transparent 2rpx);
+  background-size: 36rpx 36rpx;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  min-height: 100vh;
+  color: #333;
 }

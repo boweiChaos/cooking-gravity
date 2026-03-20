@@ -1,4 +1,4 @@
-page { background: #F8F9FA; padding-bottom: 120rpx; }
+/* Remove individual page background */
 .container { 
   box-sizing: border-box; 
   padding: 30rpx;
@@ -6,16 +6,17 @@ page { background: #F8F9FA; padding-bottom: 120rpx; }
 .section {
   background: #FFF;
   border-radius: 24rpx;
+  border: 4rpx solid #333; /* 手绘笔记本边框 */
+  box-shadow: 4rpx 6rpx 0px rgba(0,0,0,0.08); /* 手账阴影 */
   padding: 40rpx 30rpx;
-  margin-bottom: 30rpx;
-  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.02);
+  margin-bottom: 35rpx;
 }
 .sec-title {
-  font-size: 32rpx;
-  font-weight: 800;
-  color: #333;
+  font-size: 36rpx;
+  font-weight: 900;
+  color: #2D2D2D;
   margin-bottom: 30rpx;
-  border-left: 8rpx solid #333;
+  border-left: 8rpx solid #FF8BA7; /* 温暖的前缀 */
   padding-left: 16rpx;
 }
 
@@ -23,18 +24,19 @@ page { background: #F8F9FA; padding-bottom: 120rpx; }
 .form-item {
   display: flex;
   align-items: center;
-  border-bottom: 1rpx solid #EEE;
+  border-bottom: 2rpx dashed #DDD;
   padding: 24rpx 0;
 }
 .form-item .label {
-  font-size: 28rpx;
-  color: #666;
-  width: 120rpx;
+  font-size: 30rpx;
+  color: #333;
+  font-weight: bold;
+  width: 130rpx;
 }
 .form-item .input, .picker-val {
   flex: 1;
   font-size: 32rpx;
-  color: #333;
+  color: #555;
 }
 
 /* 图片九宫格 */
@@ -47,6 +49,7 @@ page { background: #F8F9FA; padding-bottom: 120rpx; }
   width: 180rpx;
   height: 180rpx;
   border-radius: 16rpx;
+  border: 3rpx solid #333; /* 照片也加上硬边框 */
   position: relative;
   overflow: hidden;
 }
@@ -80,7 +83,8 @@ page { background: #F8F9FA; padding-bottom: 120rpx; }
   align-items: center;
 }
 .small-input {
-  background: #F5F5F5;
+  background: #FFFDF8;
+  border: 2rpx solid #333; /* 笔记本样式的边框 */
   border-radius: 12rpx;
   padding: 16rpx 20rpx;
   font-size: 28rpx;
@@ -89,13 +93,15 @@ page { background: #F8F9FA; padding-bottom: 120rpx; }
 .amount-input { flex: 1; }
 .del-row { font-size: 36rpx; color: #FF4444; padding: 10rpx;}
 .add-row-btn {
-  color: #07c160;
+  color: #333;
   font-size: 28rpx;
   font-weight: bold;
   padding: 20rpx 0;
   text-align: center;
-  background: #E8F8F0;
-  border-radius: 12rpx;
+  background: #FFF;
+  border: 3rpx solid #333;
+  box-shadow: 2rpx 4rpx 0px rgba(0,0,0,0.1);
+  border-radius: 16rpx;
   margin-top: 10rpx;
 }
 
@@ -107,21 +113,23 @@ page { background: #F8F9FA; padding-bottom: 120rpx; }
   align-items: flex-start;
 }
 .step-num {
-  background: #333;
+  background: #FF8BA7;
   color: #FFF;
+  border: 3rpx solid #333;
   width: 44rpx;
   height: 44rpx;
-  border-radius: 50%;
+  border-radius: 12rpx; /* 方形可爱的贴纸感 */
   text-align: center;
   line-height: 44rpx;
-  font-size: 24rpx;
+  font-size: 26rpx;
   font-weight: bold;
   margin-top: 10rpx;
 }
 .step-input {
   flex: 1;
-  background: #F5F5F5;
-  border-radius: 12rpx;
+  background: #FFFDF8;
+  border: 2rpx solid #333;
+  border-radius: 16rpx;
   padding: 20rpx;
   min-height: 80rpx;
   font-size: 28rpx;
@@ -130,8 +138,9 @@ page { background: #F8F9FA; padding-bottom: 120rpx; }
 
 /* 杂项提示 */
 .tips-input {
-  background: #FFF9E6;
-  border-radius: 12rpx;
+  background: #FFFBEC;
+  border: 3rpx solid #FFC107;
+  border-radius: 16rpx;
   padding: 20rpx;
   width: 100%;
   box-sizing: border-box;
@@ -145,16 +154,18 @@ page { background: #F8F9FA; padding-bottom: 120rpx; }
   bottom: 0;
   left: 0;
   width: 100%;
-  background: #FFF;
+  background: rgba(253, 249, 241, 0.95);
+  backdrop-filter: blur(10px);
   padding: 30rpx 40rpx 60rpx; /* 留出底部 safe-area 的空间 */
-  box-shadow: 0 -4rpx 16rpx rgba(0,0,0,0.05);
+  border-top: 4rpx solid #333;
   box-sizing: border-box;
 }
 .submit-btn {
   background: #333333 !important;
   color: #FFF !important;
-  border-radius: 50rpx !important;
-  font-weight: 500;
+  border-radius: 60rpx !important;
+  box-shadow: 6rpx 8rpx 0px #DEDBD3; /* 萌态贴纸阴影 */
+  font-weight: bold;
   font-size: 34rpx;
 }
 .bottom-space { height: 80rpx; }

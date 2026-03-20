@@ -74,5 +74,5 @@
 
 <!-- 悬浮提交底座 -->
 <view class="footer-bar">
-  <button class="submit-btn" bindtap="submit">发布到云端菜谱库</button>
+  <button class="submit-btn" bindtap="submit">发布到菜谱库</button>
 </view>

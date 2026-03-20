@@ -7,7 +7,8 @@ Page({
     dateLabel: '今天',   // 如：今天、明天、周三
     titleText: '今晚吃什么',
     menuList: [],
-    isAdmin: false
+    isAdmin: false,
+    roleName: ''
   },
 
   onLoad() {
@@ -15,11 +16,17 @@ Page({
     
     // 如果首页加载比云函数返回 openid 慢，直接设
     if (app.globalData.openid) {
-      this.setData({ isAdmin: app.globalData.isAdmin });
+      this.setData({ 
+        isAdmin: app.globalData.isAdmin,
+        roleName: app.globalData.roleName
+      });
     } else {
       // 否则注册回调等它返回
-      app.openidCallback = (openid, isAdmin) => {
-        this.setData({ isAdmin: isAdmin });
+      app.openidCallback = (openid, isAdmin, roleName) => {
+        this.setData({ 
+          isAdmin: isAdmin,
+          roleName: roleName
+        });
       }
     }
   },
@@ -43,28 +50,36 @@ Page({
     
     const diffDays = Math.round((target - today) / (1000 * 60 * 60 * 24));
     
-    let dateLabel = `${dateObj.getMonth() + 1}月${dateObj.getDate()}日`;
+    let relativeLabel = '';
     let titleText = '当天的菜单';
     
     if (diffDays === 0) {
-      dateLabel = '今天';
+      relativeLabel = '今天';
       titleText = '今晚的菜单';
     } else if (diffDays === 1) {
-      dateLabel = '明天';
+      relativeLabel = '明天';
       titleText = '明天的预定菜单';
     } else if (diffDays === -1) {
-      dateLabel = '昨天';
+      relativeLabel = '昨天';
       titleText = '昨天吃的啥来着';
     } else if (diffDays > 1) {
-      titleText = '未来的计划';
+      relativeLabel = `${diffDays}天后`;
+      titleText = '未来的预定菜单';
     } else {
+      relativeLabel = `${Math.abs(diffDays)}天前`;
       titleText = '历史回顾';
+    }
+
+    // 例如：2026年3月20日 (今天)
+    let fullDateLabel = `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDate()}日`;
+    if (relativeLabel) {
+      fullDateLabel += ` · ${relativeLabel}`;
     }
 
     this.setData({
       currentDateObj: dateObj.getTime(), // 存时间戳方便后续计算
       currentDateStr: dateStr,
-      dateLabel: dateLabel,
+      dateLabel: fullDateLabel,
       titleText: titleText
     });
     
@@ -82,6 +97,13 @@ Page({
     const newDate = new Date(this.data.currentDateObj);
     newDate.setDate(newDate.getDate() + 1);
     this.initDate(newDate);
+  },
+
+  onDatePick(e) {
+    // e.detail.value 是 "YYYY-MM-DD"
+    // iOS/Safari 的 Date 强行需要 YYYY/MM/DD
+    const dateStr = e.detail.value.replace(/-/g, '/');
+    this.initDate(new Date(dateStr));
   },
 
   fetchMenuData() {

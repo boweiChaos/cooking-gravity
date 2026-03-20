@@ -1,7 +1,4 @@
-page { 
-  background: #FEFDFB; /* 暖肤色底子，更可爱温馨 */
-  padding-bottom: 200rpx; 
-}
+/* remove individual page background */
 
 .container {
   width: 100%;
@@ -23,7 +20,8 @@ page {
   background: white;
   padding: 50rpx 40rpx;
   border-radius: 0 0 60rpx 60rpx; /* 更圆润 */
-  box-shadow: 0 20rpx 40rpx rgba(0,0,0,0.03);
+  border-bottom: 4rpx solid #333;
+  box-shadow: 0 8rpx 0px rgba(0,0,0,0.05); /* 固体感阴影 */
   margin-bottom: 40rpx;
   text-align: center;
 }
@@ -42,8 +40,9 @@ page {
 }
 .category { 
   font-size: 26rpx; 
-  color: #FF8BA7; 
+  color: #333; 
   background: #FFEDF1; 
+  border: 3rpx solid #333; /* 笔记本硬朗边框 */
   padding: 8rpx 28rpx; 
   border-radius: 30rpx; 
   font-weight: bold;
@@ -51,12 +50,13 @@ page {
 .xhs-badge {
   display: flex;
   align-items: center;
-  background: #FF2442; /* 小红书经典红 */
+  background: #FF2442;
+  border: 3rpx solid #333; /* 硬边框 */
   padding: 8rpx 24rpx;
   border-radius: 30rpx;
-  box-shadow: 0 4rpx 12rpx rgba(255, 36, 66, 0.2);
+  box-shadow: 4rpx 4rpx 0px rgba(0,0,0,0.15); /* 斜向阴影 */
 }
-.xhs-icon { font-size: 24rpx; margin-right: 8rpx; }
+.xhs-icon { font-size: 24rpx; margin-right: 8rpx; text-shadow: none; }
 .xhs-text { font-size: 26rpx; color: #FFF; font-weight: bold; }
 
 /* 各个板块：扩大宽度，减少左右 Margin */
@@ -65,7 +65,8 @@ page {
   margin: 0 35rpx 40rpx;
   padding: 40rpx 40rpx;
   border-radius: 40rpx;
-  box-shadow: 0 10rpx 30rpx rgba(255, 139, 167, 0.05);
+  border: 4rpx solid #333;
+  box-shadow: 6rpx 8rpx 0px rgba(0,0,0,0.08); /* 手账阴影 */
 }
 
 .sec-title {
@@ -125,10 +126,10 @@ page {
 }
 
 /* 锦囊：暖色调微调 */
-.tips { background: #FFFBEC; border: 2rpx solid #FFEDC2; }
-.tips .sec-title { color: #B08D00; }
+.tips { background: #FFFBEC; border: 4rpx solid #FFC107; box-shadow: 6rpx 8rpx 0px rgba(28,28,28,0.05);}
+.tips .sec-title { color: #333; }
 .tips .sec-title::before { background: #FFC107; }
-.tips-content { font-size: 32rpx; color: #8C6600; line-height: 1.8;}
+.tips-content { font-size: 32rpx; color: #333; line-height: 1.8; font-weight: 500;}
 
 /* 底部操作：设计更圆润 */
 .footer-bar {
@@ -136,10 +137,10 @@ page {
   bottom: 0;
   left: 0;
   width: 100%;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(253, 249, 241, 0.95); /* 匹配手账底色 */
   backdrop-filter: blur(10px);
   padding: 30rpx 50rpx 80rpx;
-  box-shadow: 0 -10rpx 40rpx rgba(0,0,0,0.05);
+  border-top: 4rpx solid #333; /* 底部坚硬的边框 */
   display: flex;
   gap: 30rpx;
   box-sizing: border-box;
@@ -153,23 +154,31 @@ page {
 }
 .btn-primary { 
   flex: 2; 
-  background: #333 !important; 
+  background: #333333 !important; 
   color: #FAFAFA !important; 
   padding: 28rpx 0;
-  box-shadow: 0 10rpx 20rpx rgba(0,0,0,0.1);
+  box-shadow: 6rpx 8rpx 0px #DEDBD3; /* 萌态贴纸阴影 */
 }
 .btn-danger { 
   flex: 2; 
   background: #FF5C5C !important; 
   color: #FFF !important; 
   padding: 28rpx 0;
-  box-shadow: 0 10rpx 20rpx rgba(255, 92, 92, 0.2);
+  box-shadow: 6rpx 8rpx 0px #FFD1D1;
 }
 .btn-outline { 
   flex: 1; 
   background: #FFF !important; 
   color: #333 !important; 
-  border: 4rpx solid #EAEAEA; 
   padding: 24rpx 0;
+  box-shadow: 6rpx 8rpx 0px #DEDBD3;
+}
+.btn-delete { 
+  flex: 1; 
+  background: #FFF !important; 
+  color: #FF5C5C !important; 
+  border-color: #FF5C5C !important;
+  padding: 24rpx 0;
+  box-shadow: 6rpx 8rpx 0px #FFD1D1;
 }
 .bottom-space { height: 120rpx; }

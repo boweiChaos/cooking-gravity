@@ -1,9 +1,23 @@
 <view class="container">
   <view class="header">
+    <view class="greeting" wx:if="{{roleName}}">
+      <view class="user-badge">{{roleName}}</view>
+      <text class="welcome-text" wx:if="{{roleName === '👸 老婆大人'}}">，今天想吃点啥？</text>
+      <text class="welcome-text" wx:elif="{{roleName === '🤵‍♂️ 长工老公'}}">，还不快去买菜！</text>
+      <text class="welcome-text" wx:else>，欢迎光临寒舍！</text>
+    </view>
+    
     <view class="date-nav">
-      <view class="nav-btn" bindtap="prevDay">◄ 前一天</view>
-      <text class="date">{{dateLabel}}</text>
-      <view class="nav-btn" bindtap="nextDay">后一天 ►</view>
+      <view class="nav-btn" bindtap="prevDay">◄ 前一</view>
+      
+      <picker mode="date" value="{{currentDateStr}}" bindchange="onDatePick">
+        <view class="date-picker-trigger">
+          <text class="date">{{dateLabel}}</text>
+          <text class="calendar-icon">📅</text>
+        </view>
+      </picker>
+
+      <view class="nav-btn" bindtap="nextDay">后一 ►</view>
     </view>
     <text class="title">{{titleText}} 🍱</text>
   </view>
