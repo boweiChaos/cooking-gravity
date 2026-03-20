@@ -51,6 +51,7 @@ Page({
 
   // 删除菜谱
   deleteRecipe() {
+    if (!this.data.isAdmin) return;
     wx.showModal({
       title: '要狠心删掉吗？',
       content: '删除后无法恢复，确定要删除这道心血之作吗？',
@@ -116,6 +117,7 @@ Page({
 
   // 加入今晚菜单的核心逻辑
   addToTonightMenu() {
+    if (!this.data.isAdmin) return;
     wx.showLoading({ title: '上菜中...', mask: true });
     
     const date = new Date();
@@ -158,7 +160,7 @@ Page({
 
   // 从今晚菜单移除
   removeFromTonightMenu() {
-    if (!this.data.todayMenuId) return;
+    if (!this.data.isAdmin || !this.data.todayMenuId) return;
     
     wx.showModal({
       title: '要撤回吗？',

@@ -27,6 +27,11 @@ Page({
   },
 
   onLoad(options) {
+    if (!app.globalData.isAdmin) {
+      wx.showToast({ title: '非管理员禁止入内', icon: 'none' });
+      setTimeout(() => wx.navigateBack(), 1500);
+      return;
+    }
     if (options.id) {
       wx.setNavigationBarTitle({ title: '编辑老婆的绝作' });
       this.setData({ editId: options.id });
