@@ -1,0 +1,16 @@
+<view class="container">
+  <view class="title">数据库 (文档型就像SQL) 测试</view>
+  <button bindtap="addRecord" type="primary" class="btn">新增一条测试菜谱</button>
+  <button bindtap="getRecords" type="default" class="btn">读取菜谱列表</button>
+  
+  <view class="result-box" wx:if="{{recipeList.length > 0}}">
+    <view wx:for="{{recipeList}}" wx:key="_id" style="margin-bottom: 10rpx;">
+      👉 {{item.name}} (厨师: {{item.cook}})
+    </view>
+  </view>
+
+  <view class="title" style="margin-top: 60rpx;">云存储 (对象存储) 测试</view>
+  <button bindtap="uploadImage" type="primary" class="btn">选取图片并上传</button>
+  <image wx:if="{{imageUrl}}" src="{{imageUrl}}" class="preview-img" mode="aspectFit"></image>
+  <view wx:if="{{imageUrl}}" style="font-size:24rpx; color: gray; text-align: center;">展示的图片直接读取自云端</view>
+</view>

@@ -1,0 +1,84 @@
+page {
+  background-color: #F8F9FA;
+}
+.container { 
+  padding: 40rpx; 
+}
+.header { 
+  margin-bottom: 60rpx; 
+  padding-top: 20rpx;
+}
+.date-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+.nav-btn {
+  font-size: 26rpx;
+  color: #666;
+  background: #F0F0F0;
+  padding: 8rpx 24rpx;
+  border-radius: 30rpx;
+  font-weight: 500;
+}
+.date { 
+  font-size: 32rpx; 
+  color: #888; 
+  font-weight: bold;
+}
+.title { 
+  font-size: 56rpx; 
+  font-weight: 800; 
+  margin-top: 10rpx; 
+  display: block;
+  color: #333;
+}
+.empty { 
+  text-align: center; 
+  color: #999; 
+  margin-top: 200rpx; 
+}
+.empty-icon {
+  font-size: 100rpx;
+  margin-bottom: 30rpx;
+}
+.admin-actions { 
+  position: fixed; 
+  bottom: 80rpx; 
+  left: 40rpx; 
+  right: 40rpx; 
+}
+.btn-primary { 
+  background: #333333 !important; 
+  color: #fff !important; 
+  width: 100% !important; 
+  border-radius: 40rpx; 
+  font-size: 32rpx;
+  font-weight: 500;
+  padding: 24rpx 0;
+}
+.menu-item {
+  background: #FFF;
+  border-radius: 24rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.03);
+  display: flex;
+  align-items: center;
+}
+.info .name {
+  font-size: 36rpx;
+  font-weight: bold;
+  display: block;
+  color: #222;
+}
+.info .tags {
+  font-size: 24rpx;
+  color: #FF6B6B;
+  background: #FFF0F0;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  margin-top: 10rpx;
+  display: inline-block;
+}

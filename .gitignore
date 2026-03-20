@@ -1,0 +1,22 @@
+# 微信开发者工具私有配置文件（包含本地绝对路径和个人设置，绝对不能提交）
+project.private.config.json
+
+# 云函数和本地的依赖包
+node_modules/
+miniprogram_npm/
+
+# Mac 系统隐藏文件
+.DS_Store
+
+# 日志文件
+*.log
+
+# 临时构建产物（防范未来使用 TS 或框架）
+dist/
+unpackage/
+.temp/
+
+# 环境变量文件 (如果以后用到)
+.env
+.env.local
+.env.*.local

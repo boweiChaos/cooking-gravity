@@ -1,0 +1,175 @@
+page { 
+  background: #FEFDFB; /* 暖肤色底子，更可爱温馨 */
+  padding-bottom: 200rpx; 
+}
+
+.container {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 轮播图：微调比例，全屏感 */
+.swiper { width: 100%; height: 600rpx; }
+.slide-image { width: 100%; height: 100%; }
+.no-image { 
+  width: 100%; height: 400rpx; 
+  background: #FFF5F7; 
+  color: #FFB8C6; 
+  display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 32rpx; 
+}
+
+/* 头部：去掉左右间距感，做出一种沉浸式的顶部标题卡 */
+.header-card {
+  background: white;
+  padding: 50rpx 40rpx;
+  border-radius: 0 0 60rpx 60rpx; /* 更圆润 */
+  box-shadow: 0 20rpx 40rpx rgba(0,0,0,0.03);
+  margin-bottom: 40rpx;
+  text-align: center;
+}
+.name { 
+  font-size: 56rpx; 
+  font-weight: 900; 
+  color: #2D2D2D; 
+  margin-bottom: 30rpx; 
+  letter-spacing: 2rpx;
+}
+.tags-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20rpx;
+}
+.category { 
+  font-size: 26rpx; 
+  color: #FF8BA7; 
+  background: #FFEDF1; 
+  padding: 8rpx 28rpx; 
+  border-radius: 30rpx; 
+  font-weight: bold;
+}
+.xhs-badge {
+  display: flex;
+  align-items: center;
+  background: #FF2442; /* 小红书经典红 */
+  padding: 8rpx 24rpx;
+  border-radius: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(255, 36, 66, 0.2);
+}
+.xhs-icon { font-size: 24rpx; margin-right: 8rpx; }
+.xhs-text { font-size: 26rpx; color: #FFF; font-weight: bold; }
+
+/* 各个板块：扩大宽度，减少左右 Margin */
+.section {
+  background: #FFF;
+  margin: 0 35rpx 40rpx;
+  padding: 40rpx 40rpx;
+  border-radius: 40rpx;
+  box-shadow: 0 10rpx 30rpx rgba(255, 139, 167, 0.05);
+}
+
+.sec-title {
+  font-size: 36rpx;
+  font-weight: 800;
+  margin-bottom: 35rpx;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+.sec-title::before {
+  content: "";
+  width: 10rpx;
+  height: 36rpx;
+  background: #FF8BA7;
+  border-radius: 10rpx;
+  margin-right: 20rpx;
+}
+
+/* 原料列表：撑满行 */
+.ing-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 30rpx 0;
+  border-bottom: 2rpx dashed #FFE0E6;
+}
+.ing-item:last-child { border-bottom: none; }
+.ing-name { font-size: 32rpx; color: #4A4A4A; font-weight: 600;}
+.ing-amount { font-size: 32rpx; color: #9B9B9B; }
+
+/* 步骤：更可爱的数字序号 */
+.step-item {
+  display: flex;
+  gap: 30rpx;
+  margin-bottom: 45rpx;
+  align-items: flex-start;
+}
+.step-item:last-child { margin-bottom: 0; }
+.step-num {
+  background: #FF8BA7; /* 可爱的粉色序号 */
+  color: #FFF;
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 20rpx; /* 方圆 */
+  text-align: center;
+  line-height: 52rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  flex-shrink: 0;
+  box-shadow: 0 6rpx 12rpx rgba(255, 139, 167, 0.3);
+}
+.step-desc {
+  flex: 1;
+  font-size: 32rpx;
+  color: #555;
+  line-height: 1.8;
+}
+
+/* 锦囊：暖色调微调 */
+.tips { background: #FFFBEC; border: 2rpx solid #FFEDC2; }
+.tips .sec-title { color: #B08D00; }
+.tips .sec-title::before { background: #FFC107; }
+.tips-content { font-size: 32rpx; color: #8C6600; line-height: 1.8;}
+
+/* 底部操作：设计更圆润 */
+.footer-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 30rpx 50rpx 80rpx;
+  box-shadow: 0 -10rpx 40rpx rgba(0,0,0,0.05);
+  display: flex;
+  gap: 30rpx;
+  box-sizing: border-box;
+}
+.btn { 
+  border-radius: 60rpx; 
+  font-size: 34rpx; 
+  font-weight: bold; 
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.btn-primary { 
+  flex: 2; 
+  background: #333 !important; 
+  color: #FAFAFA !important; 
+  padding: 28rpx 0;
+  box-shadow: 0 10rpx 20rpx rgba(0,0,0,0.1);
+}
+.btn-danger { 
+  flex: 2; 
+  background: #FF5C5C !important; 
+  color: #FFF !important; 
+  padding: 28rpx 0;
+  box-shadow: 0 10rpx 20rpx rgba(255, 92, 92, 0.2);
+}
+.btn-outline { 
+  flex: 1; 
+  background: #FFF !important; 
+  color: #333 !important; 
+  border: 4rpx solid #EAEAEA; 
+  padding: 24rpx 0;
+}
+.bottom-space { height: 120rpx; }

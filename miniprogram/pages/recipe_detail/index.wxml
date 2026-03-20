@@ -1,0 +1,63 @@
+<view class="container" wx:if="{{recipe}}">
+  
+  <!-- 照片轮播 -->
+  <swiper class="swiper" indicator-dots="true" autoplay="true" interval="3000" duration="500" wx:if="{{recipe.images && recipe.images.length > 0}}">
+    <block wx:for="{{recipe.images}}" wx:key="*this">
+      <swiper-item>
+        <image src="{{item}}" mode="aspectFill" class="slide-image" bindtap="previewImage" data-url="{{item}}"/>
+      </swiper-item>
+    </block>
+  </swiper>
+  <!-- 如果没有图，显示个占位 -->
+  <view class="no-image" wx:else>🍳 无图，全凭想象</view>
+
+  <!-- 头部信息 -->
+  <view class="header-card">
+    <view class="name">{{recipe.name}}</view>
+    <view class="tags-row">
+      <view class="category">{{recipe.category}}</view>
+      <!-- 小红书来源入口 -->
+      <view class="xhs-badge" wx:if="{{recipe.xhsLink}}" bindtap="jumpToXhs">
+        <text class="xhs-icon">📕</text>
+        <text class="xhs-text">看小红书原帖</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 原料表 -->
+  <view class="section" wx:if="{{recipe.ingredients && recipe.ingredients.length > 0}}">
+    <view class="sec-title">🛒 原料清单</view>
+    <view class="ing-list">
+      <view class="ing-item" wx:for="{{recipe.ingredients}}" wx:key="index">
+        <text class="ing-name">{{item.name}}</text>
+        <text class="ing-amount">{{item.amount}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 做法步骤 -->
+  <view class="section" wx:if="{{recipe.steps && recipe.steps.length > 0}}">
+    <view class="sec-title">🧑‍🍳 做法步骤</view>
+    <view class="step-list">
+      <view class="step-item" wx:for="{{recipe.steps}}" wx:key="index">
+        <view class="step-num">{{index + 1}}</view>
+        <view class="step-desc">{{item.desc}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 老婆绝密提示 -->
+  <view class="section tips" wx:if="{{recipe.tips}}">
+    <view class="sec-title">💡 老婆的锦囊</view>
+    <view class="tips-content">{{recipe.tips}}</view>
+  </view>
+
+  <view class="bottom-space"></view>
+</view>
+
+<!-- 悬浮操作底座 (管理员可见) -->
+<view class="footer-bar" wx:if="{{isAdmin}}">
+  <button class="btn btn-outline" bindtap="editRecipe">✏️</button>
+  <button class="btn btn-danger" wx:if="{{isInTonightMenu}}" bindtap="removeFromTonightMenu">❌ 撤回菜单</button>
+  <button class="btn btn-primary" wx:else bindtap="addToTonightMenu">🍱 钦定为今晚菜谱</button>
+</view>

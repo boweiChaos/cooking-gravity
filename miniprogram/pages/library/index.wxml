@@ -1,0 +1,15 @@
+<view class="container">
+  <view class="header-bar">
+    <text class="page-title">所有菜谱库</text>
+    <button class="add-btn" wx:if="{{isAdmin}}" bindtap="goToAdd">+ 新增菜谱</button>
+  </view>
+
+  <view class="list" wx:if="{{recipes.length > 0}}">
+    <view class="list-item" wx:for="{{recipes}}" wx:key="_id" bindtap="goToDetail" data-id="{{item._id}}">
+      <view class="item-name">{{item.name}}</view>
+      <view class="item-cat">{{item.category}}</view>
+    </view>
+  </view>
+  
+  <view class="empty" wx:else>空空如也，快去添加吧～</view>
+</view>
