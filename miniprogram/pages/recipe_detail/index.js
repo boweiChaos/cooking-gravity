@@ -5,8 +5,10 @@ Page({
     recipe: null,
     recipeId: '',
     isAdmin: false,
-    isInTonightMenu: false, // 是否已经在今晚菜单
-    todayMenuId: '' // 保存今晚菜单的文档 ID 便于操作
+    isInTonightMenu: false,
+    todayMenuId: '',
+    isGrouped: false,
+    hasSteps: false
   },
 
   onLoad(options) {
@@ -16,7 +18,7 @@ Page({
         isAdmin: app.globalData.isAdmin
       });
       this.fetchDetail(options.id);
-      this.checkIfInMenu(); // 进入页面即检查
+      this.checkIfInMenu();
     }
   },
 
@@ -24,7 +26,14 @@ Page({
     wx.showLoading({ title: '加载中...' });
     const db = wx.cloud.database();
     db.collection('recipes').doc(id).get().then(res => {
-      this.setData({ recipe: res.data });
+      const data = res.data;
+      const isGrouped = !!(data.stepGroups && data.stepGroups.length);
+      const hasSteps = isGrouped || (data.steps && data.steps.length);
+      this.setData({ 
+        recipe: data,
+        isGrouped: isGrouped,
+        hasSteps: hasSteps
+      });
       wx.hideLoading();
     }).catch(err => {
       console.error(err);
@@ -33,7 +42,6 @@ Page({
     });
   },
 
-  // 点击放大图片
   previewImage(e) {
     const current = e.currentTarget.dataset.url;
     wx.previewImage({
@@ -42,14 +50,12 @@ Page({
     });
   },
 
-  // 跳转去编辑
   editRecipe() {
     wx.navigateTo({
       url: `/pages/recipe_edit/index?id=${this.data.recipeId}`
     });
   },
 
-  // 删除菜谱
   deleteRecipe() {
     if (!this.data.isAdmin) return;
     wx.showModal({
@@ -63,7 +69,6 @@ Page({
             wx.hideLoading();
             wx.showToast({ title: '已彻底删除', icon: 'success' });
             setTimeout(() => {
-              // 返回上一页
               wx.navigateBack();
             }, 1000);
           }).catch(err => {
@@ -76,15 +81,11 @@ Page({
     });
   },
 
-  // 跳转小红书逻辑（由于微信限制，采用行业标准的剪贴板方案）
   jumpToXhs() {
     if (!this.data.recipe.xhsLink) return;
-    
-    // 复制链接到系统剪贴板
     wx.setClipboardData({
       data: this.data.recipe.xhsLink,
       success: () => {
-        // 覆盖系统默认的 '内容已复制' 提示，给出更友好的引导
         wx.hideToast();
         wx.showModal({
           title: '链接已复制',
@@ -97,7 +98,6 @@ Page({
     });
   },
 
-  // 检查是否在今晚菜单
   checkIfInMenu() {
     const date = new Date();
     const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
@@ -115,7 +115,6 @@ Page({
     });
   },
 
-  // 加入今晚菜单的核心逻辑
   addToTonightMenu() {
     if (!this.data.isAdmin) return;
     wx.showLoading({ title: '上菜中...', mask: true });
@@ -158,7 +157,6 @@ Page({
       });
   },
 
-  // 从今晚菜单移除
   removeFromTonightMenu() {
     if (!this.data.isAdmin || !this.data.todayMenuId) return;
     
@@ -173,7 +171,7 @@ Page({
           
           db.collection('daily_menus').doc(this.data.todayMenuId).update({
             data: {
-              recipe_ids: _.pull(this.data.recipeId) // 使用 _.pull 原子操作移除特定元素
+              recipe_ids: _.pull(this.data.recipeId)
             }
           }).then(() => {
             wx.hideLoading();

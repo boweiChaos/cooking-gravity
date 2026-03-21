@@ -2,27 +2,14 @@ const app = getApp();
 
 Page({
   data: {
-    // 基础信息
     name: '',
     categories: ['肉类', '禽类', '水产', '素菜', '凉菜', '汤羹', '主食', '甜品/零食'],
     catIndex: 0,
-    
-    // 图片列表（本地临时路径）
     images: [],
-    
-    // 动态列表：原料
     ingredients: [{ name: '', amount: '' }],
-    
-    // 动态列表：步骤
-    steps: [{ desc: '' }],
-    
-    // 提示
+    stepGroups: [{ title: '备菜', steps: [{ desc: '' }] }],
     tips: '',
-    
-    // 小红书专属链接
     xhsLink: '',
-    
-    // 如果是编辑态，记录 id
     editId: ''
   },
 
@@ -45,12 +32,22 @@ Page({
     db.collection('recipes').doc(id).get().then(res => {
       const data = res.data;
       const catIndex = this.data.categories.indexOf(data.category);
+      
+      let stepGroups;
+      if (data.stepGroups && data.stepGroups.length) {
+        stepGroups = data.stepGroups;
+      } else if (data.steps && data.steps.length) {
+        stepGroups = [{ title: '步骤', steps: data.steps }];
+      } else {
+        stepGroups = [{ title: '备菜', steps: [{ desc: '' }] }];
+      }
+      
       this.setData({
         name: data.name || '',
         catIndex: catIndex !== -1 ? catIndex : 0,
         images: data.images || [],
         ingredients: data.ingredients && data.ingredients.length ? data.ingredients : [{ name: '', amount: '' }],
-        steps: data.steps && data.steps.length ? data.steps : [{ desc: '' }],
+        stepGroups: stepGroups,
         tips: data.tips || '',
         xhsLink: data.xhsLink || ''
       });
@@ -61,7 +58,6 @@ Page({
     });
   },
 
-  // ---- 基础信息 ----
   onNameInput(e) {
     this.setData({ name: e.detail.value });
   },
@@ -75,7 +71,6 @@ Page({
     this.setData({ xhsLink: e.detail.value });
   },
 
-  // ---- 图片 ----
   chooseImages() {
     wx.chooseMedia({
       count: 9 - this.data.images.length,
@@ -93,7 +88,6 @@ Page({
     this.setData({ images: newImgs });
   },
 
-  // ---- 原料列表 ----
   onIngNameInput(e) {
     const idx = e.currentTarget.dataset.idx;
     const val = e.detail.value;
@@ -118,36 +112,60 @@ Page({
     this.setData({ ingredients: ings });
   },
 
-  // ---- 步骤列表 ----
-  onStepInput(e) {
-    const idx = e.currentTarget.dataset.idx;
+  onGroupTitleInput(e) {
+    const groupIdx = e.currentTarget.dataset.groupIdx;
     const val = e.detail.value;
-    const stps = this.data.steps;
-    stps[idx].desc = val;
-    this.setData({ steps: stps });
+    const groups = this.data.stepGroups;
+    groups[groupIdx].title = val;
+    this.setData({ stepGroups: groups });
   },
-  addStep() {
-    this.setData({ steps: [...this.data.steps, { desc: '' }] });
+  onStepInput(e) {
+    const groupIdx = e.currentTarget.dataset.groupIdx;
+    const stepIdx = e.currentTarget.dataset.stepIdx;
+    const val = e.detail.value;
+    const groups = this.data.stepGroups;
+    groups[groupIdx].steps[stepIdx].desc = val;
+    this.setData({ stepGroups: groups });
+  },
+  addGroup() {
+    const newGroups = [...this.data.stepGroups, { title: '新分组', steps: [{ desc: '' }] }];
+    this.setData({ stepGroups: newGroups });
+  },
+  delGroup(e) {
+    const groupIdx = e.currentTarget.dataset.groupIdx;
+    const groups = [...this.data.stepGroups];
+    groups.splice(groupIdx, 1);
+    if (groups.length === 0) {
+      groups.push({ title: '备菜', steps: [{ desc: '' }] });
+    }
+    this.setData({ stepGroups: groups });
+  },
+  addStep(e) {
+    const groupIdx = e.currentTarget.dataset.groupIdx;
+    const groups = this.data.stepGroups;
+    groups[groupIdx].steps.push({ desc: '' });
+    this.setData({ stepGroups: groups });
   },
   delStep(e) {
-    const idx = e.currentTarget.dataset.idx;
-    const stps = [...this.data.steps];
-    stps.splice(idx, 1);
-    this.setData({ steps: stps });
+    const groupIdx = e.currentTarget.dataset.groupIdx;
+    const stepIdx = e.currentTarget.dataset.stepIdx;
+    const groups = this.data.stepGroups;
+    groups[groupIdx].steps.splice(stepIdx, 1);
+    if (groups[groupIdx].steps.length === 0) {
+      groups[groupIdx].steps.push({ desc: '' });
+    }
+    this.setData({ stepGroups: groups });
   },
 
-  // ---- 核心：提交到云端 ----
   async submit() {
     if (!this.data.name.trim()) return wx.showToast({ title: '名字都没填怎么行！', icon: 'none' });
     if (this.data.ingredients.length === 0 || !this.data.ingredients[0].name) return wx.showToast({ title: '买点什么菜填一下嘛', icon: 'none' });
 
     wx.showLoading({ title: '正在保存...', mask: true });
 
-    // 区分老图片（cloud://）和新图片（http://tmp/ 或 wxfile://）
     const oldCloudImages = this.data.images.filter(img => img.startsWith('cloud://'));
     const newLocalImages = this.data.images.filter(img => !img.startsWith('cloud://'));
 
-    // 1. 批量上传新图片到云存储
     const uploadTasks = newLocalImages.map(path => {
       const ext = path.match(/\.[^.]+?$/)?.[0] || '.jpg';
       const cloudPath = `recipes/${Date.now()}_${Math.random().toString(36).substr(2, 5)}${ext}`;
@@ -158,7 +176,6 @@ Page({
       const uploadResults = await Promise.all(uploadTasks);
       const newFileIDs = uploadResults.map(res => res.fileID); 
       
-      // 合并旧图的 fileID 和新上传的 fileID
       const finalFileIDs = [...oldCloudImages, ...newFileIDs];
 
       const db = wx.cloud.database();
@@ -167,21 +184,22 @@ Page({
         category: this.data.categories[this.data.catIndex],
         images: finalFileIDs,
         ingredients: this.data.ingredients.filter(i => i.name.trim()), 
-        steps: this.data.steps.filter(s => s.desc.trim()), 
+        stepGroups: this.data.stepGroups.map(g => ({
+          title: g.title,
+          steps: g.steps.filter(s => s.desc.trim())
+        })).filter(g => g.steps.length > 0),
         tips: this.data.tips,
         xhsLink: this.data.xhsLink,
         update_time: db.serverDate()
       };
 
       if (this.data.editId) {
-        // 更新现有菜谱
         await db.collection('recipes').doc(this.data.editId).update({
           data: submitData
         });
         wx.hideLoading();
         wx.showToast({ title: '保存成功！', icon: 'success' });
       } else {
-        // 新增菜谱
         submitData.create_time = db.serverDate();
         await db.collection('recipes').add({
           data: submitData
@@ -190,12 +208,10 @@ Page({
         wx.showToast({ title: '🚀 上架成功', icon: 'success' });
       }
       
-      // 延迟返回
       setTimeout(() => {
-        // wx.navigateBack() 可以返回，如果从详情页过来，可能会返回老详情，这里可以在详情页 onShow 做刷新，或者简单点返回两层
         const pages = getCurrentPages();
         if (pages.length > 2 && pages[pages.length - 2].route.includes('recipe_detail')) {
-          wx.navigateBack({ delta: 2 }); // 直接退回到图鉴库或主页
+          wx.navigateBack({ delta: 2 });
         } else {
           wx.navigateBack();
         }

@@ -36,9 +36,22 @@
   </view>
 
   <!-- 做法步骤 -->
-  <view class="section" wx:if="{{recipe.steps && recipe.steps.length > 0}}">
+  <view class="section" wx:if="{{hasSteps}}">
     <view class="sec-title">🧑‍🍳 做法步骤</view>
-    <view class="step-list">
+    
+    <view wx:if="{{isGrouped}}" class="grouped-steps">
+      <view class="step-group" wx:for="{{recipe.stepGroups}}" wx:key="group-{{index}}">
+        <view class="group-title">{{item.title}}</view>
+        <view class="step-list">
+          <view class="step-item" wx:for="{{item.steps}}" wx:for-item="step" wx:for-index="stepIdx" wx:key="step-{{stepIdx}}">
+            <view class="step-num">{{stepIdx + 1}}</view>
+            <view class="step-desc">{{step.desc}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view wx:else class="step-list">
       <view class="step-item" wx:for="{{recipe.steps}}" wx:key="index">
         <view class="step-num">{{index + 1}}</view>
         <view class="step-desc">{{item.desc}}</view>

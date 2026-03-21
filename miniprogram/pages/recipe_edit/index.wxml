@@ -1,6 +1,5 @@
 <scroll-view scroll-y style="height: calc(100vh - 180rpx);" class="container">
   
-  <!-- 基本信息 -->
   <view class="section">
     <view class="sec-title">1. 基本信息</view>
     <view class="form-item">
@@ -22,7 +21,6 @@
     </view>
   </view>
 
-  <!-- 上传照片 -->
   <view class="section">
     <view class="sec-title">2. 照片秀 (选填)</view>
     <view class="img-grid">
@@ -36,7 +34,6 @@
     </view>
   </view>
 
-  <!-- 原料表 (精细结构化) -->
   <view class="section">
     <view class="sec-title">3. 原料清单 (老婆钦点)</view>
     <view class="array-list">
@@ -49,33 +46,38 @@
     </view>
   </view>
 
-  <!-- 具体步骤 (精细结构化) -->
   <view class="section">
     <view class="sec-title">4. 具体怎么搞 (步骤)</view>
-    <view class="array-list">
-      <view class="step-item" wx:for="{{steps}}" wx:key="index">
-        <view class="step-num">{{index + 1}}</view>
-        <view class="step-input-wrapper">
-          <textarea maxlength="500" auto-height class="input step-input" placeholder="描述具体做法..." value="{{item.desc}}" bindinput="onStepInput" data-idx="{{index}}"></textarea>
-          <view class="char-count">{{item.desc.length}}/500</view>
+    <view class="group-list">
+      <view class="step-group" wx:for="{{stepGroups}}" wx:key="group-{{index}}">
+        <view class="group-header">
+          <input class="group-title-input" placeholder="分组名 (如：备菜)" value="{{item.title}}" bindinput="onGroupTitleInput" data-group-idx="{{index}}"/>
+          <view class="del-group" bindtap="delGroup" data-group-idx="{{index}}" wx:if="{{stepGroups.length > 1}}">⛔️</view>
         </view>
-        <view class="del-row" bindtap="delStep" data-idx="{{index}}">⛔️</view>
+        <view class="steps-in-group">
+          <view class="step-item" wx:for="{{item.steps}}" wx:for-item="step" wx:for-index="stepIdx" wx:key="step-{{stepIdx}}">
+            <view class="step-num">{{stepIdx + 1}}</view>
+            <view class="step-input-wrapper">
+              <textarea maxlength="500" auto-height class="input step-input" placeholder="描述具体做法..." value="{{step.desc}}" bindinput="onStepInput" data-group-idx="{{index}}" data-step-idx="{{stepIdx}}"></textarea>
+              <view class="char-count">{{step.desc.length}}/500</view>
+            </view>
+            <view class="del-row" bindtap="delStep" data-group-idx="{{index}}" data-step-idx="{{stepIdx}}" wx:if="{{item.steps.length > 1}}">⛔️</view>
+          </view>
+        </view>
+        <view class="add-step-in-group" bindtap="addStep" data-group-idx="{{index}}">+ 添加步骤</view>
       </view>
-      <view class="add-row-btn" bindtap="addStep">+ 添加步骤</view>
+      <view class="add-group-btn" bindtap="addGroup">+ 添加分组</view>
     </view>
   </view>
 
-  <!-- 注意事项 -->
   <view class="section">
     <view class="sec-title">5. 老婆给的锦囊 (注意事项)</view>
     <textarea auto-height class="input tips-input" placeholder="比如：盐少放点，肉多买点瘦的..." value="{{tips}}" bindinput="onTipsInput"></textarea>
   </view>
 
-  <!-- 底部留白以防被按钮遮挡 -->
   <view class="bottom-space"></view>
 </scroll-view>
 
-<!-- 悬浮提交底座 -->
 <view class="footer-bar">
   <button class="submit-btn" bindtap="submit">发布到菜谱库</button>
 </view>

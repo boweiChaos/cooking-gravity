@@ -105,11 +105,45 @@
   margin-top: 10rpx;
 }
 
-/* 动态列表 - 步骤 */
+.group-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30rpx;
+}
+.step-group {
+  background: #FFF9F5;
+  border: 3rpx solid #FFB088;
+  border-radius: 20rpx;
+  padding: 24rpx;
+}
+.group-header {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+}
+.group-title-input {
+  flex: 1;
+  background: #FFF;
+  border: 2rpx solid #FFB088;
+  border-radius: 12rpx;
+  padding: 12rpx 20rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+}
+.del-group {
+  font-size: 32rpx;
+  color: #FF4444;
+  padding: 10rpx;
+}
+.steps-in-group {
+  margin-bottom: 16rpx;
+}
 .step-item {
   display: flex;
   gap: 20rpx;
-  margin-bottom: 30rpx;
+  margin-bottom: 24rpx;
   align-items: flex-start;
 }
 .step-num {
@@ -118,12 +152,13 @@
   border: 3rpx solid #333;
   width: 44rpx;
   height: 44rpx;
-  border-radius: 12rpx; /* 方形可爱的贴纸感 */
+  border-radius: 12rpx;
   text-align: center;
   line-height: 44rpx;
   font-size: 26rpx;
   font-weight: bold;
   margin-top: 10rpx;
+  flex-shrink: 0;
 }
 .step-input-wrapper {
   flex: 1;
@@ -145,6 +180,28 @@
   color: #999;
   margin-top: 6rpx;
   padding-right: 4rpx;
+}
+.add-step-in-group {
+  color: #FF8C42;
+  font-size: 26rpx;
+  font-weight: bold;
+  padding: 16rpx 0;
+  text-align: center;
+  background: #FFF;
+  border: 2rpx dashed #FFB088;
+  border-radius: 12rpx;
+}
+.add-group-btn {
+  color: #333;
+  font-size: 28rpx;
+  font-weight: bold;
+  padding: 20rpx 0;
+  text-align: center;
+  background: #FFF;
+  border: 3rpx solid #333;
+  box-shadow: 2rpx 4rpx 0px rgba(0,0,0,0.1);
+  border-radius: 16rpx;
+  margin-top: 10rpx;
 }
 
 /* 杂项提示 */
