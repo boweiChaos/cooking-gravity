@@ -35,8 +35,8 @@
     </view>
   </view>
 
-  <!-- 做法步骤 -->
-  <view class="section" wx:if="{{hasSteps}}">
+  <!-- 做法步骤（仅管理员可见） -->
+  <view class="section" wx:if="{{hasSteps && isAdmin}}">
     <view class="sec-title">🧑‍🍳 做法步骤</view>
     
     <view wx:if="{{isGrouped}}" class="grouped-steps">
@@ -59,8 +59,8 @@
     </view>
   </view>
 
-  <!-- 老婆绝密提示 -->
-  <view class="section tips" wx:if="{{recipe.tips}}">
+  <!-- 老婆绝密提示（仅管理员可见） -->
+  <view class="section tips" wx:if="{{recipe.tips && isAdmin}}">
     <view class="sec-title">💡 老婆的锦囊</view>
     <view class="tips-content">{{recipe.tips}}</view>
   </view>

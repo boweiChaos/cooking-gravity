@@ -38,11 +38,8 @@
     <text>老婆大人还没决定吃啥哦～</text>
   </view>
 
-  <!-- 管理员可见入口 -->
-  <view class="admin-actions" wx:if="{{isAdmin}}">
+  <!-- 所有人都可见入口 -->
+  <view class="admin-actions">
     <button class="btn btn-primary" bindtap="goToLibrary">进入菜谱库选菜</button>
-  </view>
-  <view class="admin-actions" wx:else>
-     <!-- <button class="btn btn-secondary">呼叫老婆上菜谱</button> -->
   </view>
 </view>
