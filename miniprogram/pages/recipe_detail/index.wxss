@@ -202,4 +202,4 @@
   padding: 24rpx 0;
   box-shadow: 6rpx 8rpx 0px #FFD1D1;
 }
-.bottom-space { height: 120rpx; }
+.bottom-space { height: 280rpx; }

@@ -122,3 +122,38 @@
   margin-top: 16rpx;
   display: inline-block;
 }
+.added-badge {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+.wife-badge {
+  font-size: 24rpx;
+  color: #FFF;
+  font-weight: bold;
+  background: linear-gradient(135deg, #FF6B9D, #FF8BA7);
+  border: 3rpx solid #333;
+  padding: 8rpx 20rpx;
+  border-radius: 40rpx;
+  box-shadow: 3rpx 4rpx 0px rgba(255,139,167,0.4);
+}
+.husband-badge {
+  font-size: 24rpx;
+  color: #FFF;
+  font-weight: bold;
+  background: linear-gradient(135deg, #4A90D9, #6BB3FF);
+  border: 3rpx solid #333;
+  padding: 8rpx 20rpx;
+  border-radius: 40rpx;
+  box-shadow: 3rpx 4rpx 0px rgba(107,179,255,0.4);
+}
+.guest-badge {
+  font-size: 24rpx;
+  color: #333;
+  font-weight: bold;
+  background: #F0F0F0;
+  border: 3rpx solid #333;
+  padding: 8rpx 20rpx;
+  border-radius: 40rpx;
+  box-shadow: 3rpx 4rpx 0px rgba(0,0,0,0.1);
+}

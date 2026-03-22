@@ -8,16 +8,20 @@
     </view>
     
     <view class="date-nav">
-      <view class="nav-btn" bindtap="prevDay">◄ 前一</view>
+      <view class="nav-btn" wx:if="{{isAdmin}}" bindtap="prevDay">◄ 前一</view>
       
-      <picker mode="date" value="{{currentDateStr}}" bindchange="onDatePick">
+      <picker mode="date" value="{{currentDateStr}}" wx:if="{{isAdmin}}" bindchange="onDatePick">
         <view class="date-picker-trigger">
           <text class="date">{{dateLabel}}</text>
           <text class="calendar-icon">📅</text>
         </view>
       </picker>
+      
+      <view class="date-picker-trigger" wx:else>
+        <text class="date">{{dateLabel}}</text>
+      </view>
 
-      <view class="nav-btn" bindtap="nextDay">后一 ►</view>
+      <view class="nav-btn" wx:if="{{isAdmin}}" bindtap="nextDay">后一 ►</view>
     </view>
     <text class="title">{{titleText}} 🍱</text>
   </view>
@@ -28,6 +32,11 @@
       <view class="info">
         <text class="name">{{item.name}}</text>
         <text class="tags">{{item.category}}</text>
+      </view>
+      <view class="added-badge" wx:if="{{item.added_by}}">
+        <text wx:if="{{item.added_by === 'wife'}}" class="wife-badge">👸 老婆选的</text>
+        <text wx:elif="{{item.added_by === 'husband'}}" class="husband-badge">🤵 老公点的</text>
+        <text wx:else class="guest-badge">🍲 客人推荐</text>
       </view>
     </view>
   </view>

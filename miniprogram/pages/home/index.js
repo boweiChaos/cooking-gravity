@@ -32,8 +32,8 @@ Page({
   },
 
   onShow() {
-    // 每次显示时基于当前 currentDateStr 重新拉取
-    if (!this.data.currentDateStr) {
+    // 如果不是管理员，强制只看今天
+    if (!app.globalData.isAdmin || !this.data.currentDateStr) {
       this.initDate(new Date());
     }
     this.fetchMenuData();
@@ -114,16 +114,48 @@ Page({
       .where({ date: this.data.currentDateStr })
       .get()
       .then(res => {
-        if (res.data.length > 0 && res.data[0].recipe_ids && res.data[0].recipe_ids.length > 0) {
-          const recipeIds = res.data[0].recipe_ids;
-          const _ = db.command;
-          // 一次性通过 IN 查询拿到所有的菜品信息
-          db.collection('recipes').where({
-            _id: _.in(recipeIds)
-          }).get().then(recipeRes => {
-            this.setData({ menuList: recipeRes.data });
+        if (res.data.length > 0) {
+          const menu = res.data[0];
+          let recipeIds = [];
+          let itemMap = {};
+          
+          if (menu.items && menu.items.length > 0) {
+            recipeIds = menu.items.map(item => item.recipe_id);
+            menu.items.forEach(item => {
+              itemMap[item.recipe_id] = item;
+            });
+          } else if (menu.recipe_ids && menu.recipe_ids.length > 0) {
+            recipeIds = menu.recipe_ids;
+          }
+          
+          if (recipeIds.length > 0) {
+            const _ = db.command;
+            db.collection('recipes').where({
+              _id: _.in(recipeIds)
+            }).get().then(recipeRes => {
+              const recipesWithMeta = recipeRes.data.map(recipe => {
+                const item = itemMap[recipe._id];
+                if (item) {
+                  return {
+                    ...recipe,
+                    added_by: item.added_by,
+                    added_by_name: item.added_by_name
+                  };
+                }
+                return recipe;
+              });
+              
+              const orderedRecipes = recipeIds.map(id => 
+                recipesWithMeta.find(r => r._id === id)
+              ).filter(Boolean);
+              
+              this.setData({ menuList: orderedRecipes });
+              wx.hideLoading();
+            });
+          } else {
+            this.setData({ menuList: [] });
             wx.hideLoading();
-          });
+          }
         } else {
           this.setData({ menuList: [] });
           wx.hideLoading();

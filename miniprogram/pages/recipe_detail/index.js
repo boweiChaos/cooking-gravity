@@ -106,7 +106,12 @@ Page({
     db.collection('daily_menus').where({ date: dateStr }).get().then(res => {
       if (res.data.length > 0) {
         const menu = res.data[0];
-        const isIn = menu.recipe_ids && menu.recipe_ids.includes(this.data.recipeId);
+        let isIn = false;
+        if (menu.items && menu.items && menu.items.length > 0) {
+          isIn = menu.items.some(item => item.recipe_id === this.data.recipeId);
+        } else if (menu.recipe_ids && menu.recipe_ids.includes(this.data.recipeId)) {
+          isIn = true;
+        }
         this.setData({ 
           isInTonightMenu: isIn,
           todayMenuId: menu._id
@@ -124,18 +129,35 @@ Page({
     const db = wx.cloud.database();
     const _ = db.command;
 
+    const newItem = {
+      recipe_id: this.data.recipeId,
+      added_by: app.globalData.role,
+      added_by_name: app.globalData.roleName,
+      add_time: db.serverDate()
+    };
+
     db.collection('daily_menus')
       .where({ date: dateStr })
       .get()
       .then(res => {
         if (res.data.length > 0) {
           const menuId = res.data[0]._id;
-          if (res.data[0].recipe_ids && res.data[0].recipe_ids.includes(this.data.recipeId)) {
+          const menu = res.data[0];
+          
+          let isAlreadyIn = false;
+          if (menu.items && menu.items.length > 0) {
+            isAlreadyIn = menu.items.some(item => item.recipe_id === this.data.recipeId);
+          } else if (menu.recipe_ids && menu.recipe_ids.includes(this.data.recipeId)) {
+            isAlreadyIn = true;
+          }
+          
+          if (isAlreadyIn) {
             wx.hideLoading();
             return wx.showToast({ title: '已经在今晚菜单啦', icon: 'none' });
           }
+
           db.collection('daily_menus').doc(menuId).update({
-            data: { recipe_ids: _.push(this.data.recipeId) }
+            data: { items: _.push(newItem) }
           }).then(() => {
             wx.hideLoading();
             this.setData({ isInTonightMenu: true });
@@ -145,7 +167,8 @@ Page({
           db.collection('daily_menus').add({
             data: {
               date: dateStr,
-              recipe_ids: [this.data.recipeId],
+              items: [newItem],
+              recipe_ids: [],
               create_time: db.serverDate()
             }
           }).then(addRes => {
@@ -169,17 +192,21 @@ Page({
           const db = wx.cloud.database();
           const _ = db.command;
           
-          db.collection('daily_menus').doc(this.data.todayMenuId).update({
-            data: {
-              recipe_ids: _.pull(this.data.recipeId)
-            }
-          }).then(() => {
-            wx.hideLoading();
-            this.setData({ isInTonightMenu: false });
-            wx.showToast({ title: '已移除', icon: 'success' });
-          }).catch(err => {
-            wx.hideLoading();
-            console.error(err);
+          db.collection('daily_menus').doc(this.data.todayMenuId).get().then(menuRes => {
+            const menu = menuRes.data;
+            const items = menu.items || [];
+            const newItems = items.filter(item => item.recipe_id !== this.data.recipeId);
+            
+            db.collection('daily_menus').doc(this.data.todayMenuId).update({
+              data: { items: newItems }
+            }).then(() => {
+              wx.hideLoading();
+              this.setData({ isInTonightMenu: false });
+              wx.showToast({ title: '已移除', icon: 'success' });
+            }).catch(err => {
+              wx.hideLoading();
+              console.error(err);
+            });
           });
         }
       }
