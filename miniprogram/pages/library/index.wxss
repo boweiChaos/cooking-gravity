@@ -20,17 +20,54 @@
   margin: 0 !important; 
   box-shadow: 4rpx 6rpx 0px #DEDBD3; /* 萌态贴纸阴影 */
 }
+.category-group {
+  margin-bottom: 50rpx;
+}
+.category-title {
+  font-size: 32rpx;
+  font-weight: 900;
+  color: #333;
+  margin-bottom: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FFF9FB;
+  padding: 20rpx 24rpx;
+  border-radius: 16rpx;
+  border: 3rpx solid #FFC7D6;
+}
+.category-title::before {
+  content: "";
+  width: 8rpx;
+  height: 32rpx;
+  background: #FF8BA7;
+  border-radius: 8rpx;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+.title-text {
+  flex: 1;
+}
+.expand-icon {
+  font-size: 28rpx;
+  color: #FF8BA7;
+  transition: transform 0.3s;
+  font-weight: bold;
+}
+.recipe-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
 .list-item { 
   background: #FFF; 
-  padding: 30rpx; 
-  border-radius: 24rpx; 
-  margin-bottom: 30rpx; 
-  border: 4rpx solid #333;
-  box-shadow: 4rpx 6rpx 0px rgba(0,0,0,0.08); /* 手账阴影 */
+  padding: 28rpx 30rpx; 
+  border-radius: 20rpx; 
+  border: 3rpx solid #333;
+  box-shadow: 4rpx 5rpx 0px rgba(0,0,0,0.08); /* 手账阴影 */
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.item-name { font-size: 34rpx; font-weight: 900; color: #2D2D2D;}
-.item-cat { font-size: 24rpx; color: #333; border: 3rpx solid #333; font-weight: bold; background: #FFEDF1; padding: 4rpx 16rpx; border-radius: 20rpx; }
+.item-name { font-size: 32rpx; font-weight: 800; color: #2D2D2D;}
 .empty { margin-top: 100rpx; text-align: center; color: #888; }

@@ -4,10 +4,17 @@
     <button class="add-btn" wx:if="{{isAdmin}}" bindtap="goToAdd">+ 新增菜谱</button>
   </view>
 
-  <view class="list" wx:if="{{recipes.length > 0}}">
-    <view class="list-item" wx:for="{{recipes}}" wx:key="_id" bindtap="goToDetail" data-id="{{item._id}}">
-      <view class="item-name">{{item.name}}</view>
-      <view class="item-cat">{{item.category}}</view>
+  <view class="category-list" wx:if="{{groupedRecipes.length > 0}}">
+    <view class="category-group" wx:for="{{groupedRecipes}}" wx:key="category">
+      <view class="category-title" bindtap="toggleCategory" data-index="{{index}}">
+        <text class="title-text">{{item.category}}</text>
+        <text class="expand-icon">{{item.expanded ? '▼' : '▶'}}</text>
+      </view>
+      <view class="recipe-list" wx:if="{{item.expanded}}">
+        <view class="list-item" wx:for="{{item.recipes}}" wx:for-item="recipe" wx:key="_id" bindtap="goToDetail" data-id="{{recipe._id}}">
+          <view class="item-name">{{recipe.name}}</view>
+        </view>
+      </view>
     </view>
   </view>
   
