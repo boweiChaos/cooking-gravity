@@ -14,11 +14,33 @@ Page({
   onLoad(options) {
     if (options.id) {
       this.setData({ 
-        recipeId: options.id,
-        isAdmin: app.globalData.isAdmin
+        recipeId: options.id
       });
+      
+      // 如果 app.globalData 已经有 openid，直接设置
+      if (app.globalData.openid) {
+        this.setData({
+          isAdmin: app.globalData.isAdmin
+        });
+      } else {
+        // 否则注册回调等待云函数返回
+        app.openidCallback = (openid, isAdmin, roleName) => {
+          this.setData({
+            isAdmin: isAdmin
+          });
+        };
+      }
+      
       this.fetchDetail(options.id);
       this.checkIfInMenu();
+    }
+  },
+
+  onShow() {
+    if (app.globalData.openid) {
+      this.setData({
+        isAdmin: app.globalData.isAdmin
+      });
     }
   },
 
