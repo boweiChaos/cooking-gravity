@@ -70,17 +70,27 @@ Page({
     this.setData({ groupedRecipes: groupedRecipes });
   },
 
-  fetchRecipes() {
+  async fetchRecipes() {
     wx.showLoading({ title: '加载中...' });
     const db = wx.cloud.database();
-    db.collection('recipes').limit(100).get().then(res => {
-      const grouped = this.groupAndSortRecipes(res.data);
+    const MAX = 20;
+    try {
+      const countRes = await db.collection('recipes').count();
+      const total = countRes.total;
+      const batchTimes = Math.ceil(total / MAX);
+      const tasks = [];
+      for (let i = 0; i < batchTimes; i++) {
+        tasks.push(db.collection('recipes').skip(i * MAX).limit(MAX).get());
+      }
+      const results = await Promise.all(tasks);
+      const all = results.reduce((acc, r) => acc.concat(r.data), []);
+      const grouped = this.groupAndSortRecipes(all);
       this.setData({ groupedRecipes: grouped });
       wx.hideLoading();
-    }).catch(err => {
+    } catch (err) {
       wx.hideLoading();
       wx.showToast({ title: '获取失败', icon: 'none' });
-    });
+    }
   },
 
   goToAdd() {
